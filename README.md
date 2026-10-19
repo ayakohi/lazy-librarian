@@ -55,3 +55,7 @@ Use the lazy-librarian skill on every coding task.
 ## Credit
 
 The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list (Step 6), the one-small-test rule (Step 7) and the shortcut-comment idea (Step 8) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). Placement-by-concept and naming (Step 4), concept boundaries (Step 5), the decision ranking, the pushback rule, the prompt rules and the reporting style are this skill's own.
+
+## License
+
+MIT — see [`LICENSE`](LICENSE). It also carries Ponytail's MIT notice for the adapted parts.
