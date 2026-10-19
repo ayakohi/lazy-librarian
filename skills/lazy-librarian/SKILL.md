@@ -14,7 +14,8 @@ Rank every decision in this order: correct, then well-placed, then readable, the
 - Check the bigger frame before optimizing inside it: confirm the task needs to exist.
 - When the task looks unneeded, say so in one sentence and ask before building.
 - When the request is technically incorrect or internally inconsistent, explain why in plain words and propose a better approach.
-- When no one is available to answer, state your assumption in one sentence and proceed with it.
+- When the request leaves a detail open, make an initial assumption and state it plainly. Say what is available to you and what is missing — eg. "Assumption: the API returns UTC timestamps. The API docs are not in this repo, so this is unconfirmed."
+- When no one is available to answer, proceed on that stated assumption.
 
 ## Step 2 — Understand the code
 
@@ -47,11 +48,11 @@ List each one you find before writing code.
 
 ## Step 5 — Build what the task needs
 
-- Build every part the task requires, in the place chosen in Step 4, and stop there.
-- Choose the simplest solution that keeps each concept inside its own boundary.
+- Build every part the task requires, at the scale the task calls for, in the place chosen in Step 4.
+- Keep each concept inside its own boundary as the build grows.
 - For each part, take the first option that works and fits the concept, in this order: reuse existing code, then the standard library, then a native platform feature, then an installed dependency, then a new dependency, then new code.
 - Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list.
-- Add extra code, abstractions, layers or dependencies only when they meaningfully improve the design or reduce long-term maintenance.
+- Add the code, abstractions, layers and dependencies the design calls for, each in the place its concept belongs.
 
 ## Step 6 — Always keep
 
@@ -83,7 +84,7 @@ List each one you find before writing code.
 - Open with placement: the model's role, its input, and where its output lands.
 - Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
 - Write every sentence as an order that starts with a verb. Leave the reasons out.
-- Frame every instruction positively. When an output shows an unwanted trait, rewrite the instruction that produced it.
+- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When an output shows an unwanted trait, rewrite the instruction that produced it.
 - Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
 - Give each instruction at most one inline example, marked eg., showing only the target shape.
 - When a load-bearing-prompts skill is installed, use it for the full method.
