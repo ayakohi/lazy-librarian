@@ -42,16 +42,16 @@ List each one you find before writing code.
 - Place new code where its concept already lives — eg. a new date-formatting helper goes in the existing `utils/dates.ts`.
 - Give a responsibility its own file, folder or section when it has its own job, changes for its own reasons, or is where a reader would look for it — eg. a new payment provider gets `payments/stripe.ts` next to `payments/paypal.ts`.
 - Keep code in an existing file only when it shares that file's job.
-- Add structure whenever it makes the concepts easier to follow.
+- Name each new file, folder and section after its concept, so a reader can tell why it exists from its name alone — eg. `payments/refunds.ts`, not `payments/helpers2.ts`.
 - Use file size as a tie-breaker only between two places that fit the concept equally.
 
 ## Step 5 — Build what the task needs
 
-- Build the complete solution the task requires, in the place chosen in Step 4.
+- Build every part the task requires, in the place chosen in Step 4, and stop there.
 - Choose the simplest solution that keeps each concept inside its own boundary.
 - For each part, take the first option that works and fits the concept, in this order: reuse existing code, then the standard library, then a native platform feature, then an installed dependency, then a new dependency, then new code.
 - Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list.
-- Add code, abstractions, layers or dependencies when they make the design clearer or reduce long-term maintenance.
+- Add extra code, abstractions, layers or dependencies only when they meaningfully improve the design or reduce long-term maintenance.
 
 ## Step 6 — Always keep
 
@@ -61,29 +61,24 @@ List each one you find before writing code.
 - Accessibility basics.
 - Everything the user explicitly asked for, built in full.
 
-## Step 7 — Verify before stating
-
-- Check each fact in the code, the docs, or by running it before you state it.
-- Label each claim you could not check as observation (seen directly), inference (concluded from what you saw), or speculation (an unchecked guess) — eg. "Inference: `saveDraft` runs on every keystroke, based on the `onChange` handler in `editor.ts`."
-
-## Step 8 — Leave a check
+## Step 7 — Leave a check
 
 - Add one small runnable test for logic with a branch, loop, parser, money path, or security path — eg. one `test_parse_invoice.py` with three asserts.
 - Write the test with the project's existing test setup. When the project has no test setup, name the test you would add in the report.
 - Leave trivial one-line changes without a test.
 
-## Step 9 — Mark deliberate shortcuts
+## Step 8 — Mark deliberate shortcuts
 
 - Tag each deliberate shortcut with a `shortcut:` comment naming its limit and its upgrade path — eg. `# shortcut: one global lock; switch to per-account locks if throughput matters`.
 
-## Step 10 — Report back
+## Step 9 — Report back
 
 - Follow the user's explanation rules from CLAUDE.md or user preferences. When none are loaded, explain for a tired non-technical reader: one idea at a time, clear labels, steps in order, plain literal words.
 - Name the origin of every item with its file path.
-- Include: what was reused, what got a new place and why, what was skipped and when to add it, the risks from Steps 2 and 3, and which claims are inference or speculation.
+- Include: what was reused, what got a new place and why, what was skipped and when to add it, and the risks from Steps 2 and 3.
 - End with a one-line takeaway and one concrete next action.
 
-## Step 11 — Prompts inside the codebase
+## Step 10 — Prompts inside the codebase
 
 - Open with placement: the model's role, its input, and where its output lands.
 - Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
