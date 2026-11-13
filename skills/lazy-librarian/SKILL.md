@@ -7,6 +7,8 @@ description: Use on every coding task — writing, editing, fixing, debugging, r
 
 You make every coding decision in this session: what to build, where it goes, how to check it, and how to report it. Apply the steps below in order on every coding task. Keep this mode on for the whole session.
 
+The goal is clarity of structure: a build sized to the task and sorted so an audit is fast.
+
 Rank every decision in this order: correct, then well-placed, then readable, then small.
 
 ## Step 1 — Check the frame
@@ -21,7 +23,11 @@ Rank every decision in this order: correct, then well-placed, then readable, the
 
 - Read every file the change touches.
 - Trace the real data flow from input to output.
+- List every place the change must reach: callers, tests, fixtures, config, exports.
+- Follow each chain the change touches to its last link — eg. a renamed setting: the config entry, the code that reads it, the docs that name it.
+- Note each link that ends at something retired, resolved, or absorbed into another part.
 - For a bug, find every caller of the broken function. Fix the root cause once, at the shared point all callers pass through.
+- When a fix takes several attempts and each one turns out differently, move one level up and fix the larger root those attempts share.
 - Note each risk you uncover while reading, with its file path.
 
 ## Step 3 — Review the plan
@@ -35,16 +41,18 @@ Using what Step 2 found, check the plan for:
 - failure modes
 - operational risks
 
-List each one you find before writing code.
+List each one you find before writing code. Size the review to the change — eg. a one-line fix gets a one-line review.
 
 ## Step 4 — Choose the right place
 
-- Organize by concept, so a reader can follow the code without re-sorting it later.
+- Organize by concept, so a reader can follow the code without re-sorting it later: things that work together live together, and each group has a clear relationship to its neighbours.
 - Place new code where its concept already lives — eg. a new date-formatting helper goes in the existing `utils/dates.ts`.
 - Give a responsibility its own file, folder or section when it has its own job, changes for its own reasons, or is where a reader would look for it — eg. a new payment provider gets `payments/stripe.ts` next to `payments/paypal.ts`.
 - Keep code in an existing file only when it shares that file's job.
 - Name each new file, folder and section after its concept, so a reader can tell why it exists from its name alone — eg. `payments/refunds.ts`, not `payments/helpers2.ts`.
+- Give a lone item its category's place, even when it is the only one there — eg. the first email template gets `email/welcome.ts`.
 - Use file size as a tie-breaker only between two places that fit the concept equally.
+- Take names from the project's glossary when it has one. Add each new category there with one line saying what belongs in it. When the project has no glossary, list the new names in the report and offer to start one.
 
 ## Step 5 — Build what the task needs
 
@@ -53,6 +61,9 @@ List each one you find before writing code.
 - For each part, take the first option that works and fits the concept, in this order: reuse existing code, then the standard library, then a native platform feature, then an installed dependency, then a new dependency, then new code.
 - Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list.
 - Add the code, abstractions, layers and dependencies the design calls for, each in the place its concept belongs.
+- Change every place listed in Step 2, and keep every changed line traceable to the task.
+- Finish every chain from Step 2, so each link ends at something live. Where a part was retired, resolved, or absorbed into another part, leave a pointer to where it lives now — eg. `# moved: retry logic now lives in net/retry.ts`.
+- Carry the error handling and validation along with any code you move or merge.
 
 ## Step 6 — Always keep
 
@@ -67,6 +78,8 @@ List each one you find before writing code.
 - Add one small runnable test for logic with a branch, loop, parser, money path, or security path — eg. one `test_parse_invoice.py` with three asserts.
 - Write the test with the project's existing test setup. When the project has no test setup, name the test you would add in the report.
 - Leave trivial one-line changes without a test.
+- Run the check. Count a pass only from a check that fails when the change is removed.
+- Read the finished change as a cold reader arriving at the worst moment. Confirm each piece is findable from its name and place, and each pointer leads somewhere live.
 
 ## Step 8 — Mark deliberate shortcuts
 
@@ -77,6 +90,9 @@ List each one you find before writing code.
 - Follow the user's explanation rules from CLAUDE.md or user preferences. When none are loaded, explain for a tired non-technical reader: one idea at a time, clear labels, steps in order, plain literal words.
 - Name the origin of every item with its file path.
 - Include: what was reused, what got a new place and why, what was skipped and when to add it, and the risks from Steps 2 and 3.
+- Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 7, and the shortcuts from Step 8.
+- State coverage exactly as done, for each claim: run, read in full, spot-checked, reasoned without running, or untested.
+- Give every defect you noticed a disposition, including ones outside the task: fixed, listed for later with its file path, or accepted with the reason.
 - End with a one-line takeaway and one concrete next action.
 
 ## Step 10 — Prompts inside the codebase
@@ -87,4 +103,5 @@ List each one you find before writing code.
 - Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When an output shows an unwanted trait, rewrite the instruction that produced it.
 - Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
 - Give each instruction at most one inline example, marked eg., showing only the target shape.
+- Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
 - When a load-bearing-prompts skill is installed, use it for the full method.
