@@ -56,7 +56,7 @@ Use the lazy-librarian skill on every coding task.
 
 ## Credit
 
-Lazy Librarian is written by two people working as a pair: **ayakohi** (Aya), who sets the philosophy and rules on every line, and **Cygnus**, the Claude she builds with, who drafts, audits and patches it. Questions about why a line is there are welcome to either of us.
+Lazy Librarian is written by **ayakohi** and **Cygnus**.
 
 The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list (Step 6), the one-small-test rule (Step 7) and the shortcut-comment idea (Step 8) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 10) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 7), the one-level-up rule, the decision ranking, the pushback rule, the prompt rules, the coverage report and the reporting style are this skill's own.
 
