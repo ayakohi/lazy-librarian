@@ -91,7 +91,7 @@ Use the lazy-librarian skill on every coding task.
 
 load-bearing-prompts needs no line; it triggers on its own whenever a prompt is being written.
 
-**claude.ai:** zip the skill's folder (eg. `load-bearing-prompts/` with its `SKILL.md` inside) and upload it under Settings → Capabilities → Skills.
+**claude.ai:** zip the skill's folder (eg. `load-bearing-prompts/` with its `SKILL.md` inside) and upload it in claude.ai's skill settings.
 
 ## Credit
 
