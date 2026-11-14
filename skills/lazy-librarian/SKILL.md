@@ -1,6 +1,10 @@
 ---
 name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
+license: MIT
+metadata:
+  version: "1.0.0"
+  authors: ayakohi and Cygnus
 ---
 
 # Lazy Librarian
@@ -10,6 +14,18 @@ You make every coding decision in this session: what to build, where it goes, ho
 The goal is clarity of structure: a build sized to the task and sorted so an audit is fast.
 
 Rank every decision in this order: correct, then well-placed, then readable, then small.
+
+Size every step to the change — eg. a one-line fix gets a one-line version of each step.
+
+## Always keep
+
+Hold these through every step:
+
+- Input validation at trust boundaries.
+- Error handling that prevents data loss.
+- Security measures.
+- Accessibility basics, when the change has a user interface.
+- Everything the user explicitly asked for, built in full.
 
 ## Step 1 — Check the frame
 
@@ -41,7 +57,7 @@ Using what Step 2 found, check the plan for:
 - failure modes
 - operational risks
 
-List each one you find before writing code. Size the review to the change — eg. a one-line fix gets a one-line review.
+List each one you find before writing code.
 
 ## Step 4 — Choose the right place
 
@@ -64,16 +80,9 @@ List each one you find before writing code. Size the review to the change — eg
 - Change every place listed in Step 2, and keep every changed line traceable to the task.
 - Finish every chain from Step 2, so each link ends at something live. Where a part was retired, resolved, or absorbed into another part, leave a pointer to where it lives now — eg. `# moved: retry logic now lives in net/retry.ts`.
 - Carry the error handling and validation along with any code you move or merge.
+- Tag each deliberate shortcut with a `shortcut:` comment naming its limit and its upgrade path — eg. `# shortcut: one global lock; switch to per-account locks if throughput matters`.
 
-## Step 6 — Always keep
-
-- Input validation at trust boundaries.
-- Error handling that prevents data loss.
-- Security measures.
-- Accessibility basics.
-- Everything the user explicitly asked for, built in full.
-
-## Step 7 — Leave a check
+## Step 6 — Leave a check
 
 - Add one small runnable test for logic with a branch, loop, parser, money path, or security path — eg. one `test_parse_invoice.py` with three asserts.
 - Write the test with the project's existing test setup. When the project has no test setup, name the test you would add in the report.
@@ -81,27 +90,16 @@ List each one you find before writing code. Size the review to the change — eg
 - Run the check. Count a pass only from a check that fails when the change is removed.
 - Read the finished change as a cold reader arriving at the worst moment. Confirm each piece is findable from its name and place, and each pointer leads somewhere live.
 
-## Step 8 — Mark deliberate shortcuts
-
-- Tag each deliberate shortcut with a `shortcut:` comment naming its limit and its upgrade path — eg. `# shortcut: one global lock; switch to per-account locks if throughput matters`.
-
-## Step 9 — Report back
+## Step 7 — Report back
 
 - Follow the user's explanation rules from CLAUDE.md or user preferences. When none are loaded, explain for a tired non-technical reader: one idea at a time, clear labels, steps in order, plain literal words.
 - Name the origin of every item with its file path.
 - Include: what was reused, what got a new place and why, what was skipped and when to add it, and the risks from Steps 2 and 3.
-- Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 7, and the shortcuts from Step 8.
+- Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 6, and the shortcuts from Step 5.
 - State coverage exactly as done, for each claim: run, read in full, spot-checked, reasoned without running, or untested.
 - Give every defect you noticed a disposition, including ones outside the task: fixed, listed for later with its file path, or accepted with the reason.
 - End with a one-line takeaway and one concrete next action.
 
-## Step 10 — Prompts inside the codebase
+## Prompts inside the codebase
 
-- Open with placement: the model's role, its input, and where its output lands.
-- Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
-- Write every sentence as an order that starts with a verb. Leave the reasons out.
-- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When an output shows an unwanted trait, rewrite the instruction that produced it.
-- Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
-- Give each instruction at most one inline example, marked eg., showing only the target shape.
-- Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
-- When a load-bearing-prompts skill is installed, use it for the full method.
+When writing a prompt for a single-pass model with no context, use the load-bearing-prompts skill.
