@@ -1,8 +1,21 @@
 # Lazy Librarian
 
-*By ayakohi and Cygnus.* · Version 1.1.0 · MIT
+*By ayakohi and Cygnus.* · MIT
 
-A coding skill for Claude. It builds what the task needs, puts every piece where its concept belongs, and explains plainly what it did.
+Two skills for Claude, shipped together:
+
+| Skill | Version | What it's for |
+|---|---|---|
+| [**lazy-librarian**](skills/lazy-librarian/SKILL.md) | 1.1.0 | Every coding task: what to build, where it goes, how to check it, how to report it. |
+| [**load-bearing-prompts**](skills/load-bearing-prompts/SKILL.md) | 1.0.0 | Writing prompts that a model runs cold, in one pass: API calls, cron jobs, subagent one-shots. |
+
+They work on their own. Together, lazy-librarian's Step 8 hands prompt writing to load-bearing-prompts for the full method.
+
+---
+
+## lazy-librarian
+
+A coding skill. It builds what the task needs, puts every piece where its concept belongs, and explains plainly what it did.
 
 Decisions are ranked in this order: **correct → well-placed → readable → small.** Every step is sized to the change, so a one-line fix gets a one-line pass.
 
@@ -37,29 +50,54 @@ Less mess to audit. And when you do audit, it's easy to find.
 
 8. **Prompts inside the codebase** *(optional)* — only when the change includes a prompt: plain, positive orders a cheap model can follow cold, keeping only the sentences that change what the model does. This step is the one most worth making your own: swap in your house's prompt rules if you have them.
 
-The skill itself is one file: [`skills/lazy-librarian/SKILL.md`](skills/lazy-librarian/SKILL.md).
+---
+
+## load-bearing-prompts
+
+*By ayakohi.*
+
+A skill for writing prompts that a model runs with no history, in a single pass. That model is often a cheap one that follows orders rather than reasoning. Think of a nightly job that summarizes logs, or a string in your code that gets sent to an API.
+
+It turns a prompt into a work order:
+
+- **Placement first** — the model's role, its input, and where the output lands. The input data goes in its own labeled block, so the model reads it as material.
+- **Orders, not explanations** — every sentence starts with a verb and can be acted on at once.
+- **Positive framing** — describe what you want; a ban names the unwanted thing and plants it in the model's context.
+- **Cold reader** — everything a sentence needs is inside that sentence.
+- **One example per order** — showing only the shape to copy.
+- **Exact shape for machine-read output** — when a program reads the result, show the full output once.
+- **Simple words, short sentences** — written for the cheapest model that will ever run it.
+
+It ends with a worked before-and-after and a sentence-by-sentence test.
+
+
+---
 
 ## Install
 
-**Easiest way, in Claude Code:** download `SKILL.md`, then tell Claude Code:
+Each skill is one folder under `skills/`, holding one `SKILL.md`. Install one or both.
+
+**Easiest way, in Claude Code:** download the `SKILL.md` you want, then tell Claude Code, eg.:
 
 ```
 Install this file as a personal skill called lazy-librarian, and add a line to my CLAUDE.md saying to use the lazy-librarian skill on every coding task.
 ```
 
-**By hand, in Claude Code:** copy `skills/lazy-librarian/SKILL.md` to `~/.claude/skills/lazy-librarian/SKILL.md`. To make it apply on every coding task, add this line to your `CLAUDE.md`:
+**By hand, in Claude Code:** copy each folder to `~/.claude/skills/`, so you end up with `~/.claude/skills/lazy-librarian/SKILL.md` and `~/.claude/skills/load-bearing-prompts/SKILL.md`. To make lazy-librarian apply on every coding task, add this line to your `CLAUDE.md`:
 
 ```
 Use the lazy-librarian skill on every coding task.
 ```
 
-**claude.ai:** add `SKILL.md` as a skill in your settings.
+load-bearing-prompts needs no line; it triggers on its own whenever a prompt is being written.
+
+**claude.ai:** zip the skill's folder (eg. `load-bearing-prompts/` with its `SKILL.md` inside) and upload it under Settings → Capabilities → Skills.
 
 ## Credit
 
-Lazy Librarian is written by **ayakohi** and **Cygnus**.
+**lazy-librarian** is written by **ayakohi** and **Cygnus**. **load-bearing-prompts** is written by **ayakohi**, an original method rather than an adaptation.
 
-The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule, the decision ranking, the sizing rule, the pushback rule, the prompt rules, the coverage report and the reporting style are this skill's own.
+The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule, the decision ranking, the sizing rule, the pushback rule, the prompt rules, the coverage report and the reporting style are lazy-librarian's own.
 
 ## Changes
 
@@ -67,4 +105,4 @@ See [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE). It also carries Ponytail's MIT notice for the adapted parts.
+MIT — see [`LICENSE`](LICENSE). It also carries Ponytail's MIT notice for the parts of lazy-librarian adapted from it.

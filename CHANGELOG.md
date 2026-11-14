@@ -1,10 +1,26 @@
 # Changelog
 
-## 1.1.0 — 2026-11-14
+Each skill keeps its own version.
+
+## load-bearing-prompts
+
+### 1.0.0 — 2026-11-14
+
+First version in this repo.
+
+- Input slot: the placement rule now puts the input data in its own labeled block and names it in the opening line.
+- New rule: when a program reads the output, show the exact full shape once, as the last order.
+- Two commentary sentences rewritten as plain statements.
+- Worked example updated to show the labeled input block.
+- Added `license` and `version` to the frontmatter.
+
+## lazy-librarian
+
+### 1.1.0 — 2026-11-14
 
 - Prompt rules restored as Step 8, an optional step that applies only when the change includes a prompt. It is the step meant for each house to make its own.
 
-## 1.0.0 — 2026-11-14
+### 1.0.0 — 2026-11-14
 
 First numbered version.
 
