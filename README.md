@@ -1,6 +1,6 @@
 # Lazy Librarian
 
-*By ayakohi and Cygnus.* · Version 1.0.0 · MIT
+*By ayakohi and Cygnus.* · Version 1.1.0 · MIT
 
 A coding skill for Claude. It builds what the task needs, puts every piece where its concept belongs, and explains plainly what it did.
 
@@ -35,7 +35,7 @@ Less mess to audit. And when you do audit, it's easy to find.
 6. **Leave a check** — one small test for real logic, using the project's own test setup, run once, and counted only when it could have failed; then one read as a cold reader arriving at the worst moment.
 7. **Report back** — plain explanation, file paths for everything, risks listed, exactly what was run versus only read or reasoned, a decision on every defect noticed, one clear next action.
 
-For prompts written into a codebase, it hands off to the `load-bearing-prompts` skill, when it is installed.
+8. **Prompts inside the codebase** *(optional)* — only when the change includes a prompt: plain, positive orders a cheap model can follow cold, keeping only the sentences that change what the model does. This step is the one most worth making your own: swap in your house's prompt rules if you have them.
 
 The skill itself is one file: [`skills/lazy-librarian/SKILL.md`](skills/lazy-librarian/SKILL.md).
 
@@ -59,7 +59,7 @@ Use the lazy-librarian skill on every coding task.
 
 Lazy Librarian is written by **ayakohi** and **Cygnus**.
 
-The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) is adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule, the decision ranking, the sizing rule, the pushback rule, the coverage report and the reporting style are this skill's own.
+The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule, the decision ranking, the sizing rule, the pushback rule, the prompt rules, the coverage report and the reporting style are this skill's own.
 
 ## Changes
 

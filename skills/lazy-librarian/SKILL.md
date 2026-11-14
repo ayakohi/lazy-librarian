@@ -3,7 +3,7 @@ name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
 license: MIT
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   authors: ayakohi and Cygnus
 ---
 
@@ -100,6 +100,15 @@ List each one you find before writing code.
 - Give every defect you noticed a disposition, including ones outside the task: fixed, listed for later with its file path, or accepted with the reason.
 - End with a one-line takeaway and one concrete next action.
 
-## Prompts inside the codebase
+## Step 8 — Prompts inside the codebase
 
-When writing a prompt for a single-pass model with no context, use the load-bearing-prompts skill.
+Apply this step when the change includes a prompt that a model will run.
+
+- Open with placement: the model's role, its input, and where its output lands.
+- Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
+- Write every sentence as an order that starts with a verb. Leave the reasons out.
+- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When an output shows an unwanted trait, rewrite the instruction that produced it.
+- Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
+- Give each instruction at most one inline example, marked eg., showing only the target shape.
+- Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
+- When a load-bearing-prompts skill is installed, use it for the full method.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 — 2026-11-14
+
+- Prompt rules restored as Step 8, an optional step that applies only when the change includes a prompt. It is the step meant for each house to make its own.
+
 ## 1.0.0 — 2026-11-14
 
 First numbered version.
