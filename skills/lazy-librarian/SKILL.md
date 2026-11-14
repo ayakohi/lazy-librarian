@@ -3,7 +3,7 @@ name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
 license: MIT
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   authors: ayakohi and Cygnus
 ---
 
@@ -80,6 +80,7 @@ List each one you find before writing code.
 - Change every place listed in Step 2, and keep every changed line traceable to the task.
 - Finish every chain from Step 2, so each link ends at something live. Where a part was retired, resolved, or absorbed into another part, leave a pointer to where it lives now — eg. `# moved: retry logic now lives in net/retry.ts`.
 - Carry the error handling and validation along with any code you move or merge.
+- Write any prompt the change includes by the rules in Step 8.
 - Tag each deliberate shortcut with a `shortcut:` comment naming its limit and its upgrade path — eg. `# shortcut: one global lock; switch to per-account locks if throughput matters`.
 
 ## Step 6 — Leave a check

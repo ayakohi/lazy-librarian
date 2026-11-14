@@ -6,7 +6,7 @@ Two skills for Claude, shipped together:
 
 | Skill | Version | What it's for |
 |---|---|---|
-| [**lazy-librarian**](skills/lazy-librarian/SKILL.md) | 1.1.0 | Every coding task: what to build, where it goes, how to check it, how to report it. |
+| [**lazy-librarian**](skills/lazy-librarian/SKILL.md) | 1.1.1 | Every coding task: what to build, where it goes, how to check it, how to report it. |
 | [**load-bearing-prompts**](skills/load-bearing-prompts/SKILL.md) | 1.0.0 | Writing prompts that a model runs cold, in one pass: API calls, cron jobs, subagent one-shots. |
 
 They work on their own. Together, lazy-librarian's Step 8 hands prompt writing to load-bearing-prompts for the full method.

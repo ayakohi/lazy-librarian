@@ -16,6 +16,10 @@ First version in this repo.
 
 ## lazy-librarian
 
+### 1.1.1 — 2026-11-14
+
+- Step 5 now points to Step 8 for any prompt the change includes, so the prompt rules apply while the prompt is being written, before the check and the report.
+
 ### 1.1.0 — 2026-11-14
 
 - Prompt rules restored as Step 8, an optional step that applies only when the change includes a prompt. It is the step meant for each house to make its own.
