@@ -3,7 +3,7 @@ name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
 license: MIT
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   authors: ayakohi and Cygnus
 ---
 
@@ -26,6 +26,7 @@ Hold these through every step:
 - Security measures.
 - Accessibility basics, when the change has a user interface.
 - Everything the user explicitly asked for, built in full.
+- A stop before deleting data, publishing, deploying, or touching secrets that no one confirmed: report the step and wait for a yes.
 
 ## Step 1 — Check the frame
 
@@ -33,10 +34,11 @@ Hold these through every step:
 - When the task looks unneeded, say so in one sentence and ask before building.
 - When the request is technically incorrect or internally inconsistent, explain why in plain words and propose a better approach.
 - When the request leaves a detail open, make an initial assumption and state it plainly. Say what is available to you and what is missing — eg. "Assumption: the API returns UTC timestamps. The API docs are not in this repo, so this is unconfirmed."
-- When no one is available to answer, proceed on that stated assumption.
+- When no one is available to answer, proceed on that stated assumption for work you can undo.
 
 ## Step 2 — Understand the code
 
+- Read the repository's own instruction files first — eg. AGENTS.md.
 - Read every file the change touches.
 - Trace the real data flow from input to output.
 - List every place the change must reach: callers, tests, fixtures, config, exports.
@@ -68,16 +70,19 @@ List each one you find before writing code.
 - Name each new file, folder and section after its concept, so a reader can tell why it exists from its name alone — eg. `payments/refunds.ts`, not `payments/helpers2.ts`.
 - Give a lone item its category's place, even when it is the only one there — eg. the first email template gets `email/welcome.ts`.
 - Use file size as a tie-breaker only between two places that fit the concept equally.
-- Take names from the project's glossary when it has one. Add each new category there with one line saying what belongs in it. When the project has no glossary, list the new names in the report and offer to start one.
+- Take names from the project's glossary when it has one. Add each new category there with one line saying what belongs in it, and list each one in the report for the user to keep or cut. When the project has no glossary, list the new names in the report and offer to start one.
 
 ## Step 5 — Build what the task needs
 
 - Build every part the task requires, at the scale the task calls for, in the place chosen in Step 4.
+- For a bug, write the check first and watch it fail before the fix — eg. a test that reproduces the wrong refund.
 - Keep each concept inside its own boundary as the build grows.
 - For each part, take the first option that works and fits the concept, in this order: reuse existing code, then the standard library, then a native platform feature, then an installed dependency, then a new dependency, then new code.
 - Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list.
+- Before adding a new dependency, check the job's size. For a small job, write the code instead — eg. a ten-line helper. For a job that is hard to get right, take a well-maintained dependency and name it in the report — eg. dates, encryption, parsing.
 - Add the code, abstractions, layers and dependencies the design calls for, each in the place its concept belongs.
-- Change every place listed in Step 2, and keep every changed line traceable to the task.
+- Change every place listed in Step 2 that the fix requires, and keep every changed line traceable to the task. For a bug fixed at the shared point, keep the callers as they are and confirm each one still works.
+- For a generated or vendored file, change the source that produces it.
 - Finish every chain from Step 2, so each link ends at something live. Where a part was retired, resolved, or absorbed into another part, leave a pointer to where it lives now — eg. `# moved: retry logic now lives in net/retry.ts`.
 - Carry the error handling and validation along with any code you move or merge.
 - Write any prompt the change includes by the rules in Step 8.
@@ -88,8 +93,10 @@ List each one you find before writing code.
 - Add one small runnable test for logic with a branch, loop, parser, money path, or security path — eg. one `test_parse_invoice.py` with three asserts.
 - Write the test with the project's existing test setup. When the project has no test setup, name the test you would add in the report.
 - Leave trivial one-line changes without a test.
-- Run the check. Count a pass only from a check that fails when the change is removed.
-- Read the finished change as a cold reader arriving at the worst moment. Confirm each piece is findable from its name and place, and each pointer leads somewhere live.
+- Run the check on the finished change and watch it pass.
+- When the check has not yet failed without the change, undo the change in a scratch copy, run the check there, and watch it fail.
+- When no check can run, report the step as "read, not run".
+- Read the finished change as its weakest reader: no context, the cheapest model, deep in a long session. Confirm each piece is findable from its name and place, and each pointer leads somewhere live.
 
 ## Step 7 — Report back
 
@@ -103,20 +110,21 @@ List each one you find before writing code.
 
 ## Step 8 — Prompts inside the codebase
 
-Apply this step when the change includes a prompt that a model will run.
+Apply this step when the change includes a prompt that a model will run. When a load-bearing-prompts skill is installed, follow it for this step. Otherwise use the rules below.
 
 - Open with placement: the model's role, its input, and where its output lands.
+- Put the input data in its own labeled block after the orders, and name the block in the first line — eg. "Classify the email in the <email> block below."
 - Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
 - Write every sentence as an order that starts with a verb. Leave the reasons out.
-- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When an output shows an unwanted trait, rewrite the instruction that produced it.
+- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When the output must exclude something exact, state it in one clause that starts with a verb. When an output shows an unwanted trait, rewrite the instruction that produced it.
 - Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
 - Give each instruction at most one inline example, marked eg., showing only the target shape.
 - Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
-- When a load-bearing-prompts skill is installed, use it for the full method.
+- When a program reads the output, end with the exact output shape — eg. `Reply with only: {"category": "billing", "urgent": false}`
 
 ## When a fix fails twice
 
-Apply this section at any step, when a second fix on the same problem fails or the symptom moves to a new place. Repeated fixes on one problem mean the fixes are aimed at the wrong root: move one level up and find it. Bring fresh eyes to the problem, and keep the session going in this thread.
+Apply this section at any step, when a second fix on the same problem fails or the symptom moves to a new place. Read that as a sign the root is still unfound: move one level up, starting with the case card below. Bring fresh eyes to the problem, and keep the session going in this thread.
 
 ### Write the case card
 
@@ -127,12 +135,12 @@ Apply this section at any step, when a second fix on the same problem fails or t
 
 ### With subagents: the round table
 
-- Summon at least two fresh agents, from different models or tools when available. Give each one only the case card, with this job: find the cause and change nothing.
+- Summon at least two fresh agents, from different models or tools when available. Give each one the case card and read access to the code, with this job: find the cause and change nothing. Keep earlier guesses about the cause out of what they see.
 - Run them separately, so neither sees the other's answer.
 - Ask each one to return the cause in one sentence, its evidence, and one prediction: where else the problem must show up, and where it can't.
 - Treat every answer as a lead to test. Lay the answers side by side and read their shape: what each one noticed, where they point the same way, and where they split. Test first where they point the same way.
 - Test each prediction and follow the one that holds.
-- Remove the earlier patches, then fix once, at the cause.
+- Remove the earlier patches this session made, and keep every other change in the worktree as it is. Then fix once, at the cause.
 - When every prediction fails, log what is now ruled out as a known note and keep going on that narrower ground.
 
 ### Without subagents: the known note
