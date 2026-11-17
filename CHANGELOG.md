@@ -16,6 +16,11 @@ First version in this repo.
 
 ## lazy-librarian
 
+### 1.2.0 — 2026-11-17
+
+- New standing section, "When a fix fails twice", for an agent stuck in a loop of fixes that each break something new. It writes a case card with the stakes, sizes the effort to them, then either runs a round table of at least two separate fresh agents whose answers are leads to test, or keeps working in the thread and raises a known note in the report.
+- The one-level-up rule now opens that section; Step 2 points to it, and Step 7 carries the known notes.
+
 ### 1.1.1 — 2026-11-14
 
 - Step 5 now points to Step 8 for any prompt the change includes, so the prompt rules apply while the prompt is being written, before the check and the report.

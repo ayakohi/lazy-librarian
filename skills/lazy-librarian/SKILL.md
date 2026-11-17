@@ -3,13 +3,13 @@ name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
 license: MIT
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
   authors: ayakohi and Cygnus
 ---
 
 # Lazy Librarian
 
-You make every coding decision in this session: what to build, where it goes, how to check it, and how to report it. Apply the steps below in order on every coding task. Keep this mode on for the whole session.
+You make every coding decision in this session: what to build, where it goes, how to check it, and how to report it. Apply the steps below in order on every coding task. Hold "Always keep" through every step, and use "When a fix fails twice" whenever its condition is met. Keep this mode on for the whole session.
 
 The goal is clarity of structure: a build sized to the task and sorted so an audit is fast.
 
@@ -43,7 +43,7 @@ Hold these through every step:
 - Follow each chain the change touches to its last link — eg. a renamed setting: the config entry, the code that reads it, the docs that name it.
 - Note each link that ends at something retired, resolved, or absorbed into another part.
 - For a bug, find every caller of the broken function. Fix the root cause once, at the shared point all callers pass through.
-- When a fix takes several attempts and each one turns out differently, move one level up and fix the larger root those attempts share.
+- When a second fix on the same problem fails, follow "When a fix fails twice".
 - Note each risk you uncover while reading, with its file path.
 
 ## Step 3 — Review the plan
@@ -96,7 +96,7 @@ List each one you find before writing code.
 - Follow the user's explanation rules from CLAUDE.md or user preferences. When none are loaded, explain for a tired non-technical reader: one idea at a time, clear labels, steps in order, plain literal words.
 - Name the origin of every item with its file path.
 - Include: what was reused, what got a new place and why, what was skipped and when to add it, and the risks from Steps 2 and 3.
-- Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 6, and the shortcuts from Step 5.
+- Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 6, the shortcuts from Step 5, and each known note from "When a fix fails twice" for the user to decide on.
 - State coverage exactly as done, for each claim: run, read in full, spot-checked, reasoned without running, or untested.
 - Give every defect you noticed a disposition, including ones outside the task: fixed, listed for later with its file path, or accepted with the reason.
 - End with a one-line takeaway and one concrete next action.
@@ -113,3 +113,31 @@ Apply this step when the change includes a prompt that a model will run.
 - Give each instruction at most one inline example, marked eg., showing only the target shape.
 - Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
 - When a load-bearing-prompts skill is installed, use it for the full method.
+
+## When a fix fails twice
+
+Apply this section at any step, when a second fix on the same problem fails or the symptom moves to a new place. Repeated fixes on one problem mean the fixes are aimed at the wrong root: move one level up and find it. Bring fresh eyes to the problem, and keep the session going in this thread.
+
+### Write the case card
+
+- Pause fixing. Write what was expected, what happens, and how to make it happen.
+- List each attempt with what it did. Keep the card to things you saw happen.
+- Write how much the problem matters: what breaks, and for whom, while it stays.
+- Size the rest of this section to that — eg. a misaligned icon gets one fix that holds and a known note; lost user data gets the full round table.
+
+### With subagents: the round table
+
+- Summon at least two fresh agents, from different models or tools when available. Give each one only the case card, with this job: find the cause and change nothing.
+- Run them separately, so neither sees the other's answer.
+- Ask each one to return the cause in one sentence, its evidence, and one prediction: where else the problem must show up, and where it can't.
+- Treat every answer as a lead to test. Lay the answers side by side and read their shape: what each one noticed, where they point the same way, and where they split. Test first where they point the same way.
+- Test each prediction and follow the one that holds.
+- Remove the earlier patches, then fix once, at the cause.
+- When every prediction fails, log what is now ruled out as a known note and keep going on that narrower ground.
+
+### Without subagents: the known note
+
+- Keep working in this thread, without stopping.
+- Before the next fix, write the cause in one sentence and test one prediction.
+- Log the case card as a known note, marked "diagnosed in-thread, unreviewed", with a clear description of what the error looks like.
+- Raise each known note in the report, so the user decides what happens to it.
