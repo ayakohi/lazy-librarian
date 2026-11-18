@@ -3,7 +3,7 @@ name: lazy-librarian
 description: Use on every coding task — writing, editing, fixing, debugging, refactoring, reviewing, planning or designing code, choosing files, folders, dependencies or libraries, writing scripts, configs, tests, or prompts inside a codebase. Decides what to build, where it belongs, how to check it, and how to report it.
 license: MIT
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   authors: ayakohi and Cygnus
 ---
 
@@ -26,7 +26,7 @@ Hold these through every step:
 - Security measures.
 - Accessibility basics, when the change has a user interface.
 - Everything the user explicitly asked for, built in full.
-- A stop before deleting data, publishing, deploying, or touching secrets that no one confirmed: report the step and wait for a yes.
+- A stop before publishing, deploying, or touching secrets that no one confirmed: report the step and wait for a yes.
 
 ## Step 1 — Check the frame
 
@@ -75,16 +75,18 @@ List each one you find before writing code.
 ## Step 5 — Build what the task needs
 
 - Build every part the task requires, at the scale the task calls for, in the place chosen in Step 4.
-- For a bug, write the check first and watch it fail before the fix — eg. a test that reproduces the wrong refund.
+- For a bug, write the check first and watch it fail for the reason the fix will remove — eg. a wrong total, not a missing import.
 - Keep each concept inside its own boundary as the build grows.
 - For each part, take the first option that works and fits the concept, in this order: reuse existing code, then the standard library, then a native platform feature, then an installed dependency, then a new dependency, then new code.
-- Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list.
+- Reuse existing code only when the new job belongs to that code's concept. When it belongs elsewhere, move down the list. When the reused part is a live thing — eg. a login, a port, a running process — name its owner in the report, and give the new code its own copy when it must keep working while that owner is down.
 - Before adding a new dependency, check the job's size. For a small job, write the code instead — eg. a ten-line helper. For a job that is hard to get right, take a well-maintained dependency and name it in the report — eg. dates, encryption, parsing.
-- Add the code, abstractions, layers and dependencies the design calls for, each in the place its concept belongs.
+- Add the abstractions, layers and dependencies the task needs, each in the place its concept belongs.
 - Change every place listed in Step 2 that the fix requires, and keep every changed line traceable to the task. For a bug fixed at the shared point, keep the callers as they are and confirm each one still works.
 - For a generated or vendored file, change the source that produces it.
 - Finish every chain from Step 2, so each link ends at something live. Where a part was retired, resolved, or absorbed into another part, leave a pointer to where it lives now — eg. `# moved: retry logic now lives in net/retry.ts`.
 - Carry the error handling and validation along with any code you move or merge.
+- Before destructive changes, assess recoverability. If the change can be reliably restored or rolled back — eg. version control, an existing backup, or moving it to a holding folder — proceed when the task calls for it and record the recovery path. If it cannot be reliably undone, stop and ask for confirmation before acting. Preserve uncertain data and report what changed and how to recover it.
+- Install into the project's own environment when it has one — eg. a venv or the project's node_modules. When something has to go onto the machine itself, install it and list it in the report: what, where, and how to remove it and everything it brought with it.
 - Write any prompt the change includes by the rules in Step 8.
 - Tag each deliberate shortcut with a `shortcut:` comment naming its limit and its upgrade path — eg. `# shortcut: one global lock; switch to per-account locks if throughput matters`.
 
@@ -94,58 +96,27 @@ List each one you find before writing code.
 - Write the test with the project's existing test setup. When the project has no test setup, name the test you would add in the report.
 - Leave trivial one-line changes without a test.
 - Run the check on the finished change and watch it pass.
-- When the check has not yet failed without the change, undo the change in a scratch copy, run the check there, and watch it fail.
+- When the check has not yet failed without the change, undo the change in a scratch copy, run the check there, and watch it fail for the reason the change removes.
 - When no check can run, report the step as "read, not run".
 - Read the finished change as its weakest reader: no context, the cheapest model, deep in a long session. Confirm each piece is findable from its name and place, and each pointer leads somewhere live.
 
 ## Step 7 — Report back
+
+Size the report to the change, and leave out each item that has nothing in it.
 
 - Follow the user's explanation rules from CLAUDE.md or user preferences. When none are loaded, explain for a tired non-technical reader: one idea at a time, clear labels, steps in order, plain literal words.
 - Name the origin of every item with its file path.
 - Include: what was reused, what got a new place and why, what was skipped and when to add it, and the risks from Steps 2 and 3.
 - Carry forward what earlier steps sent here: the assumptions from Step 1, the new names from Step 4, the tests named in Step 6, the shortcuts from Step 5, and each known note from "When a fix fails twice" for the user to decide on.
 - State coverage exactly as done, for each claim: run, read in full, spot-checked, reasoned without running, or untested.
-- Give every defect you noticed a disposition, including ones outside the task: fixed, listed for later with its file path, or accepted with the reason.
+- Give every defect you noticed a disposition: fixed when it is inside the task; otherwise listed for later with its file path, or accepted with the reason.
+- When the change runs unattended, name where its failures land and who will see them.
 - End with a one-line takeaway and one concrete next action.
 
 ## Step 8 — Prompts inside the codebase
 
-Apply this step when the change includes a prompt that a model will run. When a load-bearing-prompts skill is installed, follow it for this step. Otherwise use the rules below.
-
-- Open with placement: the model's role, its input, and where its output lands.
-- Put the input data in its own labeled block after the orders, and name the block in the first line — eg. "Classify the email in the <email> block below."
-- Set vantage and disposition in one line each when the output has a voice — eg. "Write in second person. Tone is plain and warm."
-- Write every sentence as an order that starts with a verb. Leave the reasons out.
-- Frame every instruction positively to avoid pink elephant instances: describe the target, and leave unwanted traits unnamed. When the output must exclude something exact, state it in one clause that starts with a verb. When an output shows an unwanted trait, rewrite the instruction that produced it.
-- Write for the cheapest model that will ever run the prompt: simple words, short sentences, and everything each sentence needs inside that sentence.
-- Give each instruction at most one inline example, marked eg., showing only the target shape.
-- Keep each sentence that changes what the model does. Cut each sentence the model already follows without it.
-- When a program reads the output, end with the exact output shape — eg. `Reply with only: {"category": "billing", "urgent": false}`
+Apply this step when the change includes a prompt that a model will run. When a load-bearing-prompts skill is installed, follow it. Otherwise read `prompts.md` in this skill's folder and follow it.
 
 ## When a fix fails twice
 
-Apply this section at any step, when a second fix on the same problem fails or the symptom moves to a new place. Read that as a sign the root is still unfound: move one level up, starting with the case card below. Bring fresh eyes to the problem, and keep the session going in this thread.
-
-### Write the case card
-
-- Pause fixing. Write what was expected, what happens, and how to make it happen.
-- List each attempt with what it did. Keep the card to things you saw happen.
-- Write how much the problem matters: what breaks, and for whom, while it stays.
-- Size the rest of this section to that — eg. a misaligned icon gets one fix that holds and a known note; lost user data gets the full round table.
-
-### With subagents: the round table
-
-- Summon at least two fresh agents, from different models or tools when available. Give each one the case card and read access to the code, with this job: find the cause and change nothing. Keep earlier guesses about the cause out of what they see.
-- Run them separately, so neither sees the other's answer.
-- Ask each one to return the cause in one sentence, its evidence, and one prediction: where else the problem must show up, and where it can't.
-- Treat every answer as a lead to test. Lay the answers side by side and read their shape: what each one noticed, where they point the same way, and where they split. Test first where they point the same way.
-- Test each prediction and follow the one that holds.
-- Remove the earlier patches this session made, and keep every other change in the worktree as it is. Then fix once, at the cause.
-- When every prediction fails, log what is now ruled out as a known note and keep going on that narrower ground.
-
-### Without subagents: the known note
-
-- Keep working in this thread, without stopping.
-- Before the next fix, write the cause in one sentence and test one prediction.
-- Log the case card as a known note, marked "diagnosed in-thread, unreviewed", with a clear description of what the error looks like.
-- Raise each known note in the report, so the user decides what happens to it.
+Apply this at any step, when a second fix on the same problem fails or the symptom moves to a new place: read `fix-twice.md` in this skill's folder and follow it. Keep the session going in this thread.

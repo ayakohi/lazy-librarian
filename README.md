@@ -6,7 +6,7 @@ Two skills for Claude, shipped together:
 
 | Skill | Version | What it's for |
 |---|---|---|
-| [**lazy-librarian**](skills/lazy-librarian/SKILL.md) | 1.3.0 | Every coding task: what to build, where it goes, how to check it, how to report it. |
+| [**lazy-librarian**](skills/lazy-librarian/SKILL.md) | 1.4.0 | Every coding task: what to build, where it goes, how to check it, how to report it. |
 | [**load-bearing-prompts**](skills/load-bearing-prompts/SKILL.md) | 1.0.0 | Writing prompts that a model runs cold, in one pass: API calls, cron jobs, subagent one-shots. |
 
 They work on their own. Together, lazy-librarian's Step 8 hands prompt writing to load-bearing-prompts for the full method.
@@ -33,7 +33,7 @@ This skill changes how Claude behaves before and after it writes code:
 - **It uses what you already have, when it fits.** Existing code, built-in tools and installed packages come first, as long as they belong to the same idea.
 - **It builds at your scale.** Small fix or big system, it builds what the task calls for. It just keeps everything sorted as it grows.
 - **It's upfront about guesses.** When something's unclear, it states its assumption and says what it could and couldn't check.
-- **It never cuts the important stuff.** Nothing you asked for gets skipped, and security, input checks and error handling always stay in. Before anything it can't undo (deleting data, publishing, deploying, touching secrets), it stops and asks.
+- **It never cuts the important stuff.** Nothing you asked for gets skipped, and security, input checks and error handling always stay in. Before a destructive change it checks whether it can be undone: if yes, it goes ahead and tells you how to get it back; if not, it stops and asks. Anything it installs on your machine gets listed with how to remove it.
 - **It tells you what it did, plainly.** What it reused, what it created and why, what it skipped, and what could go wrong — with file names, so you know where to look.
 
 Less mess to audit. And when you do audit, it's easy to find.
@@ -77,15 +77,15 @@ It ends with a worked before-and-after and a sentence-by-sentence test.
 
 ## Install
 
-Each skill is one folder under `skills/`, holding one `SKILL.md`. Install one or both.
+Each skill is one folder under `skills/`. load-bearing-prompts is a single `SKILL.md`. lazy-librarian is a `SKILL.md` plus two files it reads only when needed: `prompts.md` (Step 8, when no load-bearing-prompts skill is installed) and `fix-twice.md` (when a fix fails twice). Keep each folder whole. Install one or both.
 
-**Easiest way, in Claude Code:** download the `SKILL.md` you want, then tell Claude Code, eg.:
+**Easiest way, in Claude Code:** download the skill's folder, then tell Claude Code, eg.:
 
 ```
-Install this file as a personal skill called lazy-librarian, and add a line to my CLAUDE.md saying to use the lazy-librarian skill on every coding task.
+Install this folder as a personal skill called lazy-librarian, and add a line to my CLAUDE.md saying to use the lazy-librarian skill on every coding task.
 ```
 
-**By hand, in Claude Code:** copy each folder to `~/.claude/skills/`, so you end up with `~/.claude/skills/lazy-librarian/SKILL.md` and `~/.claude/skills/load-bearing-prompts/SKILL.md`. To make lazy-librarian apply on every coding task, add this line to your `CLAUDE.md`:
+**By hand, in Claude Code:** copy each folder to `~/.claude/skills/`, so you end up with `~/.claude/skills/lazy-librarian/` (all three files) and `~/.claude/skills/load-bearing-prompts/SKILL.md`. To make lazy-librarian apply on every coding task, add this line to your `CLAUDE.md`:
 
 ```
 Use the lazy-librarian skill on every coding task.
@@ -99,7 +99,9 @@ load-bearing-prompts needs no line; it triggers on its own whenever a prompt is 
 
 **lazy-librarian** is written by **ayakohi** and **Cygnus**. **load-bearing-prompts** is written by **ayakohi**, an original method rather than an adaptation.
 
-The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Suggestions shipped in 1.3.0 come from **Anne** and **Chadrien** of [House of Solance](https://github.com/SolanceLab), who stress-tested 1.2.0 across several models and filed them in [issue #1](https://github.com/ayakohi/lazy-librarian/issues/1): the stop before irreversible steps, the action-style bite check, reading the repo's instruction files first, keeping callers as they are at a shared-point fix, changing generated files at their source, the Step 8 rules synced with load-bearing-prompts, and the round table's read access and session-only patch removal.
+The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Félix of [House of Solance](https://github.com/SolanceLab) benchmarked 1.3.0 across house setups and shaped 1.4.0: installs recorded with how to remove them, a check that fails for the reason the fix removes, naming the owner of a reused live thing, and naming where an unattended job's failures land.
+
+Suggestions shipped in 1.3.0 come from **Anne** and **Chadrien** of [House of Solance](https://github.com/SolanceLab), who stress-tested 1.2.0 across several models and filed them in [issue #1](https://github.com/ayakohi/lazy-librarian/issues/1): the stop before irreversible steps, the action-style bite check, reading the repo's instruction files first, keeping callers as they are at a shared-point fix, changing generated files at their source, the Step 8 rules synced with load-bearing-prompts, and the round table's read access and session-only patch removal.
 
 Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule and the fix-fails-twice section with its case card, round table and known note, the decision ranking, the sizing rule, the pushback rule, the prompt rules, the coverage report and the reporting style are lazy-librarian's own.
 
