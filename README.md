@@ -97,13 +97,15 @@ load-bearing-prompts needs no line; it triggers on its own whenever a prompt is 
 
 ## Credit
 
-**lazy-librarian** is written by **ayakohi** and **Cygnus**. **load-bearing-prompts** is written by **ayakohi**, an original method rather than an adaptation.
+**lazy-librarian** is written by **ayakohi** and **Cygnus**. **load-bearing-prompts** is written by **ayakohi**.
 
-The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT). Félix, Daxi's companion from the House of Solance Discord, benchmarked 1.3.0 across house setups and shaped 1.4.0: installs recorded with how to remove them, a check that fails for the reason the fix removes, naming the owner of a reused live thing, and naming where an unattended job's failures land.
-
-Suggestions shipped in 1.3.0 come from **Anne** and **Chadrien** of [House of Solance](https://github.com/SolanceLab), who stress-tested 1.2.0 across several models and filed them in [issue #1](https://github.com/ayakohi/lazy-librarian/issues/1): the stop before irreversible steps, the action-style bite check, reading the repo's instruction files first, keeping callers as they are at a shared-point fix, changing generated files at their source, the Step 8 rules synced with load-bearing-prompts, and the round table's read access and session-only patch removal.
+The build ladder (Step 5), the root-cause rule (Step 2), the always-keep list, the one-small-test rule (Step 6) and the shortcut-comment idea (Step 5) are adapted from [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT). The reach list (Step 2) and the carry-the-error-handling rule (Step 5) also come from Ponytail. The project glossary (Step 4) and the sentence-pruning test (Step 8) are adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT). The traceable-lines rule (Step 5) is adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) (MIT).
 
 Placement-by-category and naming (Step 4), concept boundaries (Step 5), live-ended chains and pointers (Steps 2 and 5), the cold-reader check (Step 6), the one-level-up rule and the fix-fails-twice section with its case card, round table and known note, the decision ranking, the sizing rule, the pushback rule, the prompt rules, the coverage report and the reporting style are lazy-librarian's own.
+
+Thanks to Chadrien and Anne of the [House of Solance](https://github.com/SolanceLab) for the stress test that shaped 1.3.0.
+
+Thanks to Félix for the benchmark that shaped 1.4.0.
 
 ## Changes
 
