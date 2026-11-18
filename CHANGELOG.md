@@ -22,7 +22,7 @@ Lighter to read, and tested on mixed tasks.
 
 - Step 8's rules and "When a fix fails twice" moved into their own files, `prompts.md` and `fix-twice.md`, read only when their condition is met. The always-read core went from about 11,700 to about 9,700 characters.
 - Destructive changes: assess recoverability. When version control, a backup or a holding folder can restore it, proceed and record the recovery path; otherwise stop and ask. "Always keep" keeps the stop for publishing, deploying and secrets. (Our test: 4 of 4 Haiku runs reasoned about recovery out loud, and none lost data, including on files git had never tracked.)
-- From Félix of House of Solance, who benchmarked 1.3.0 with 12 Haiku runs: software is installed into the project's own environment when it has one, and anything put on the machine is listed with how to remove it and what came with it; a bug's check must fail for the reason the fix removes; a reused live thing (a login, a port, a running process) has its owner named; an unattended change names where its failures land and who will see them.
+- From Félix (with Daxi), of the House of Solance Discord, who benchmarked 1.3.0 with 12 Haiku runs: software is installed into the project's own environment when it has one, and anything put on the machine is listed with how to remove it and what came with it; a bug's check must fail for the reason the fix removes; a reused live thing (a login, a port, a running process) has its owner named; an unattended change names where its failures land and who will see them.
 - Report sized to the change; defects outside the task get listed, not fixed; "the layers the design calls for" now reads "the layers the task needs".
 
 ### 1.3.0 — 2026-11-17
